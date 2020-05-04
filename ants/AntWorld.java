@@ -27,9 +27,15 @@ public class AntWorld extends World
      */
     private void prepare()
     {
-        AntHill antHill = new AntHill();
-        addObject(antHill,304,154);
-        Food food = new Food();
-        addObject(food,400,403);
+        for(int i = 1; i <= 2; i++)
+        {
+            AntHill anthill = new AntHill();
+            addObject(anthill,Greenfoot.getRandomNumber(SIZE),Greenfoot.getRandomNumber(SIZE));
+        }
+        for(int i = 1; i <= 3; i++)
+        {
+            Food food = new Food();
+            addObject(food,Greenfoot.getRandomNumber(SIZE),Greenfoot.getRandomNumber(SIZE));
+        }
     }
 }
