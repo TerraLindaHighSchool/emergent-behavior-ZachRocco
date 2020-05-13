@@ -42,9 +42,9 @@ public class Pheromone extends Actor
         image = new GreenfootImage(size + 1, size + 1);
         image.setColor(Color.WHITE);
         image.setTransparency(intensity/3);
-        image.drawOval(0, 0, size, size);
+        image.fillOval(0, 0, size, size);
         image.setColor(Color.DARK_GRAY);
-        image.drawRect(size / 2, size / 2, 2, 2);
+        image.fillRect(size / 2, size / 2, 2, 2);
         setImage(image);
     }
 }
