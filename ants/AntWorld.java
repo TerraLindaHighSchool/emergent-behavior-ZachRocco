@@ -38,4 +38,12 @@ public class AntWorld extends World
             addObject(food,Greenfoot.getRandomNumber(SIZE),Greenfoot.getRandomNumber(SIZE));
         }
     }
+    
+    public void act()
+    {
+        if (getObjects(Food.class).size() == 0 && getObjects(Pheromone.class).size() == 0 && getObjects(Ant.class).size() == 0)
+        {
+            Greenfoot.stop();
+        }
+    }
 }

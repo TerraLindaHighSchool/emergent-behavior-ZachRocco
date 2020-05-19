@@ -15,6 +15,7 @@ public class Pheromone extends Actor
     public Pheromone()
     {
         intensity = MAX_INTENSITY;
+        updateImage();
     }
     /**
      * Act - do whatever the Pheromone wants to do. This method is called whenever

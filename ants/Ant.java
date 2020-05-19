@@ -14,7 +14,7 @@ public class Ant extends Creature
     private static final int MAX_PH_AVAILBLE = 16;
     private static final int TIME_FOLLOWING_TRAIL = 30;
     private int phAvailable = MAX_PH_AVAILBLE;
-    private int followTrialTimeRemaining = 0;
+    private int followTrailTimeRemaining = 0;
     
     /**
      * Create an ant with a given home hill. The initial speed is zero (not moving).
@@ -32,6 +32,15 @@ public class Ant extends Creature
     public void act()
     {
         status();
+        //This wasn't in the assignment but it looks really neat so I wanted to keep it in
+        if (getWorld().getObjects(Food.class).size() == 0 && getWorld().getObjects(Pheromone.class).size() == 0)
+        {
+            walkTowardsHome();
+            if(atHome())
+            {
+                getWorld().removeObject(this);
+            }
+        }
     }
     
     private void checkForFood()
@@ -59,7 +68,22 @@ public class Ant extends Creature
     
     private void searchForFood()
     {
-        randomWalk();
+        if(followTrailTimeRemaining == 0)
+        {
+            if (smellsPheromone())
+            {
+                walkTowardsPheromoneCenter();
+            }
+            else
+            {
+                randomWalk();
+            }
+        }
+        else
+        {
+            followTrailTimeRemaining--;
+            walkAwayFromHome();
+        }
         checkForFood();
     }
     
@@ -68,6 +92,7 @@ public class Ant extends Creature
         if (carryingFood)
         {
             walkTowardsHome();
+            handlePheromoneDrop();
             if(atHome())
             {
                 setImage(image1);
@@ -83,16 +108,40 @@ public class Ant extends Creature
     
     private void handlePheromoneDrop()
     {
-        
+        if (phAvailable == MAX_PH_AVAILBLE)
+        {
+            Pheromone pheromone = new Pheromone();
+            getWorld().addObject(pheromone,getX(),getY());
+            phAvailable = 0;
+        }
+        else
+        {
+            phAvailable++;
+        }
     }
     
-    private void smellsPheromone()
+    private boolean smellsPheromone()
     {
-        
+        if(isTouching(Pheromone.class))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     
     private void walkTowardsPheromoneCenter()
     {
-        
+        Actor pheromone = getIntersectingObjects(Pheromone.class).get(0);
+        if (pheromone != null)
+        {
+            headTowards(pheromone);
+            if (pheromone.getX() == this.getX() && pheromone.getY() == this.getY())
+            {
+                followTrailTimeRemaining = TIME_FOLLOWING_TRAIL;
+            }
+        }
     }
 }
